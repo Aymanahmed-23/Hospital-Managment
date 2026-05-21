@@ -1,0 +1,31 @@
+.bill-estimate {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: rgba(0,198,255,.05);
+  border: 1px solid rgba(0,198,255,.15);
+  border-radius: 8px;
+}
+.bill-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.bill-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 4px 0;
+  color: var(--text-dim);
+}
+.bill-row span:last-child { color: var(--text); }
+.bill-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 700;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  margin-top: 4px;
+}

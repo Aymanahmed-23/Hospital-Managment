@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables - NEVER commit these
+.env
+**/.env
+
+# Vite build output
+HospitalApp/hospital-app/dist/
+HospitalApp/hospital-app/.vite/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

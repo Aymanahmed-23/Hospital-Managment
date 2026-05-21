@@ -1,0 +1,65 @@
+.page-header { margin-bottom: 28px; }
+.page-title  { font-family: 'DM Serif Display', serif; font-size: 30px; margin-bottom: 4px; }
+.page-sub    { font-size: 14px; color: var(--text-muted); }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: rgba(0,198,255,.3); }
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+.stat-icon  { font-size: 24px; margin-bottom: 12px; }
+.stat-value { font-family: 'DM Serif Display', serif; font-size: 32px; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.stat-sub   { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Ward occupancy bars */
+.ward-occ-list { display: flex; flex-direction: column; gap: 16px; }
+.ward-occ-row {}
+.ward-occ-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.ward-occ-name { font-size: 13px; font-weight: 600; }
+.ward-occ-rate { font-size: 11px; color: var(--text-muted); }
+.ward-occ-right { text-align: right; }
+.ward-occ-pct   { font-size: 14px; font-weight: 700; }
+.ward-occ-count { font-size: 11px; color: var(--text-muted); }
+
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.progress-fill    { height: 100%; border-radius: 3px; transition: width 0.5s; }
+.fill-normal      { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+.fill-emergency   { background: linear-gradient(90deg, #ff6b6b, var(--danger)); }
+.fill-full        { background: var(--danger); }
