@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ActionBar, Button, Modal, FormGrid, FormGroup, Input, Select, EmptyState } from "../components/UI";
 import "./PageShared.css";
+import { addNurse } from "../data/seedData";
+
 
 function AddNurseModal({ onClose, onSave }) {
   const [form, setForm] = useState({ name: "", shift: "Morning" });
@@ -47,8 +49,12 @@ export default function Nurses({ nurses, setNurses }) {
     setNurses((prev) =>
       prev.map((n) => (n.id === id ? { ...n, available: !n.available } : n))
     );
-  const add = (data) =>
-    setNurses((prev) => [...prev, { ...data, id: Date.now() }]);
+
+  const add = async (data) => {
+  const res = await addNurse(data);
+  setNurses((prev) => [...prev, { ...data, id: res.nurseId }]);
+};
+
 
   return (
     <div>

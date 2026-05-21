@@ -2,6 +2,8 @@
 
 const API = import.meta.env.VITE_API_URL;
 
+console.log('API URL:', API);
+
 // ── GET ──────────────────────────────────────────────────────
 
 export async function fetchPatients() {
@@ -17,8 +19,15 @@ export async function fetchPatients() {
 }
 
 export async function fetchDoctors() {
-  const r = await fetch(`${API}/doctors`);
-  return r.json();
+  try {
+    const r = await fetch(`${API}/doctors`);
+    const data = await r.json();
+    console.log('doctors:', data);
+    return data;
+  } catch (err) {
+    console.error('fetchDoctors failed:', err);
+    return [];
+  }
 }
 
 export async function fetchNurses() {

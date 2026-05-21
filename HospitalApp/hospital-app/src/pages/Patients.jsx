@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { ActionBar, SearchInput, Button, EmptyState } from "../components/UI";
 import AdmitModal   from "../components/AdmitModal";
+import { admitPatient } from "../data/seedData";
+
+
+
 import ReceiptModal from "../components/ReceiptModal";
 import { formatCurrency, calcTotal } from "../utils";
 import "./PageShared.css";
@@ -14,7 +18,11 @@ export default function Patients({ patients, setPatients, doctors, nurses, wards
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const admit    = (data) => setPatients((prev) => [...prev, { ...data, id: Date.now() }]);
+const admit = async (data) => {
+  const res = await admitPatient(data);
+  setPatients((prev) => [...prev, { ...data, id: res.patientId }]);
+};
+
   const discharge = (id) =>
     setPatients((prev) =>
       prev.map((p) => (p.id === id ? { ...p, status: "discharged" } : p))

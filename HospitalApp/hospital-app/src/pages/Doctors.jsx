@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { ActionBar, Button, Modal, FormGrid, FormGroup, Input, EmptyState } from "../components/UI";
+
 import { formatCurrency } from "../utils";
 import "./PageShared.css";
+import { addDoctor } from "../data/seedData";
+
 
 function AddDoctorModal({ onClose, onSave }) {
   const [form, setForm] = useState({ name: "", specialty: "", fee: "" });
@@ -47,9 +50,12 @@ export default function Doctors({ doctors, setDoctors }) {
     setDoctors((prev) =>
       prev.map((d) => (d.id === id ? { ...d, available: !d.available } : d))
     );
-  const add = (data) =>
-    setDoctors((prev) => [...prev, { ...data, id: Date.now() }]);
+  const add = async (data) => {
+    const res = await addDoctor(data);
+    setDoctors((prev) => [...prev, { ...data, id: res.doctorId }]);
+  };
 
+  
   return (
     <div>
       <div className="page-header">
