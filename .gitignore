@@ -2,7 +2,7 @@
 node_modules/
 **/node_modules/
 
-# Environment variables - NEVER commit these
+# Environment variables
 .env
 **/.env
 
@@ -10,10 +10,12 @@ node_modules/
 HospitalApp/hospital-app/dist/
 HospitalApp/hospital-app/.vite/
 
+# Spring Boot build output
+hospital-backend/target/
+
 # Logs
-logs/
 *.log
-npm-debug.log*
+logs/
 
 # OS files
 .DS_Store
@@ -21,3 +23,7 @@ Thumbs.db
 
 # VS Code
 .vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml

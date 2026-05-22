@@ -13,7 +13,18 @@ CREATE TABLE patients (
 
     ward_rate DECIMAL(10,2),
     doctor_fee DECIMAL(10,2),
-
+INSERT INTO wards (id, type, name, beds, occupied, rate_per_day)
+VALUES (
+    id:int,
+    'type:varchar',
+    'name:varchar',
+    beds:int,
+    occupied:int,
+    'rate_per_day:decimal'
+  );
     status VARCHAR(50),
     diagnosis VARCHAR(255)
 );
+
+INSERT INTO wards (type, name, beds, occupied, rate_per_day)
+VALUES ('normal', 'General Ward A', 20, 14, 800);
