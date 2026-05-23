@@ -31,14 +31,14 @@ public class PatientController {
         Patient saved = patientRepo.save(patient);
 
         // find matching ward by name and increment occupied
-        wardRepo.findByName(patient.getWard()).ifPresentOrElse(
-            ward -> {
+        wardRepo.findAll().stream()
+            .filter(w -> w.getName().equals(patient.getWard()))
+            .findFirst()
+            .ifPresent(ward -> {
                 ward.setOccupied(ward.getOccupied() + 1);
                 wardRepo.save(ward);
                 System.out.println("Ward updated: " + ward.getName() + " occupied: " + ward.getOccupied());
-            },
-            () -> System.out.println("Ward not found: " + patient.getWard())
-        );
+            });
 
         return Map.of("message", "Patient added successfully", "patientId", saved.getId());
     }
