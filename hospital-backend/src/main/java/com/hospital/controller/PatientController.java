@@ -26,18 +26,25 @@ public class PatientController {
 
     @PostMapping
     public Map<String, Object> add(@RequestBody Patient patient) {
-        // save patient first
         Patient saved = patientRepo.save(patient);
 
-        // find matching ward by name and increment occupied
+        // debug logs
+        System.out.println("Patient ward name: '" + patient.getWard() + "'");
+        wardRepo.findAll().forEach(w ->
+            System.out.println("DB ward name: '" + w.getName() + "'")
+        );
+
         wardRepo.findAll().stream()
             .filter(w -> w.getName().equals(patient.getWard()))
             .findFirst()
-            .ifPresent(ward -> {
-                ward.setOccupied(ward.getOccupied() + 1);
-                wardRepo.save(ward);
-                System.out.println("Ward updated: " + ward.getName() + " occupied: " + ward.getOccupied());
-            });
+            .ifPresentOrElse(
+                ward -> {
+                    ward.setOccupied(ward.getOccupied() + 1);
+                    wardRepo.save(ward);
+                    System.out.println("Ward updated: " + ward.getName() + " occupied: " + ward.getOccupied());
+                },
+                () -> System.out.println("NO WARD MATCHED — check names above")
+            );
 
         return Map.of("message", "Patient added successfully", "patientId", saved.getId());
     }
@@ -48,7 +55,6 @@ public class PatientController {
         patient.setStatus("discharged");
         patientRepo.save(patient);
 
-        // decrement ward occupancy on discharge
         wardRepo.findAll().stream()
             .filter(w -> w.getName().equals(patient.getWard()))
             .findFirst()
