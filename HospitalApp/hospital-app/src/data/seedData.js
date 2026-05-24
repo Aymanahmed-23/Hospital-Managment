@@ -7,7 +7,7 @@ console.log('API URL:', API);
 // ── GET ──────────────────────────────────────────────────────
 
 export async function fetchPatients() {
-  const r = await fetch(`${API}/patients`);
+  const r = await fetch(`${API}api//patients`);
   const data = await r.json();
   // map snake_case from DB → camelCase for frontend
   return data.map(p => ({
@@ -20,7 +20,7 @@ export async function fetchPatients() {
 
 export async function fetchDoctors() {
   try {
-    const r = await fetch(`${API}/doctors`);
+    const r = await fetch(`${API}/api/doctors`);
     const data = await r.json();
     console.log('doctors:', data);
     return data;
@@ -31,12 +31,12 @@ export async function fetchDoctors() {
 }
 
 export async function fetchNurses() {
-  const r = await fetch(`${API}/nurses`);
+  const r = await fetch(`${API}/api/nurses`);
   return r.json();
 }
 
 export async function fetchWards() {
-  const r = await fetch(`${API}/wards`);
+  const r = await fetch(`${API}/api/wards`);
   const data = await r.json();
   // map snake_case from DB → camelCase for frontend
   return data.map(w => ({
@@ -48,7 +48,7 @@ export async function fetchWards() {
 // ── POST ─────────────────────────────────────────────────────
 
 export async function admitPatient(patient) {
-  const r = await fetch(`${API}/patients`, {
+  const r = await fetch(`${API}/api/patients`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
