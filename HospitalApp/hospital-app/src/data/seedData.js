@@ -7,7 +7,7 @@ console.log('API URL:', API);
 // ── GET ──────────────────────────────────────────────────────
 
 export async function fetchPatients() {
-  const r = await fetch(`${API}api/patients`);
+  const r = await fetch(`${API}/api/patients`);
   const data = await r.json();
   // map snake_case from DB → camelCase for frontend
   return data.map(p => ({
