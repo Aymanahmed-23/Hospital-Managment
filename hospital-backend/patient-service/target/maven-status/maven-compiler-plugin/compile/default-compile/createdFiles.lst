@@ -1,0 +1,10 @@
+com/hospital/patient/model/Doctor.class
+com/hospital/patient/repository/PatientRepository.class
+com/hospital/patient/PatientApplication.class
+com/hospital/patient/controller/NurseController.class
+com/hospital/patient/model/Patient.class
+com/hospital/patient/controller/PatientController.class
+com/hospital/patient/model/Nurse.class
+com/hospital/patient/controller/DoctorController.class
+com/hospital/patient/repository/DoctorRepository.class
+com/hospital/patient/repository/NurseRepository.class

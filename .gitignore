@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+**/.env
+
+# Vite build output
+HospitalApp/hospital-app/dist/
+HospitalApp/hospital-app/.vite/
+
+# Spring Boot build output
+hospital-backend/target/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+
+# Spring Boot configs
+**/application.properties
+**/application-local.properties
+
+
+target/
+**/target/
