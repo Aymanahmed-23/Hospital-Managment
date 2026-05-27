@@ -6,8 +6,10 @@ import com.hospital.patient.model.Patient;
 import com.hospital.patient.repository.DoctorRepository;
 import com.hospital.patient.repository.NurseRepository;
 import com.hospital.patient.repository.PatientRepository;
+import com.hospital.patient.security.JwtValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -32,16 +34,34 @@ public class PatientController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private JwtValidator jwtValidator;
+
     @Value("${ward.service.url}")
     private String wardServiceUrl;
 
+    private ResponseEntity<?> validateToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Missing or invalid authorization header"));
+        }
+        String token = authHeader.substring(7);
+        if (!jwtValidator.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid or expired token"));
+        }
+        return null;
+    }
+
     @GetMapping
-    public List<Patient> getAll() {
-        return patientRepo.findAll();
+    public ResponseEntity<?> getAll(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        ResponseEntity<?> validation = validateToken(authHeader);
+        if (validation != null) return validation;
+        return ResponseEntity.ok(patientRepo.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Patient patient) {
+    public ResponseEntity<?> add(@RequestHeader(value = "Authorization", required = false) String authHeader, @RequestBody Patient patient) {
+        ResponseEntity<?> validation = validateToken(authHeader);
+        if (validation != null) return validation;
 
         // check doctor exists and has capacity
         Doctor doctor = doctorRepo.findByName(patient.getDoctor()).orElse(null);
@@ -92,7 +112,10 @@ public class PatientController {
     }
 
     @PatchMapping("/{id}/discharge")
-    public Map<String, Object> discharge(@PathVariable Long id) {
+    public ResponseEntity<?> discharge(@RequestHeader(value = "Authorization", required = false) String authHeader, @PathVariable Long id) {
+        ResponseEntity<?> validation = validateToken(authHeader);
+        if (validation != null) return validation;
+
         Patient patient = patientRepo.findById(id).orElseThrow();
         patient.setStatus("discharged");
         patientRepo.save(patient);
@@ -119,6 +142,6 @@ public class PatientController {
             System.out.println("Ward service call failed: " + e.getMessage());
         }
 
-        return Map.of("message", "Patient discharged");
+        return ResponseEntity.ok(Map.of("message", "Patient discharged"));
     }
 }

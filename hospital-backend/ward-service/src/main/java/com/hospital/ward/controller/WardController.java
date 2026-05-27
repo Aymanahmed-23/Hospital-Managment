@@ -2,7 +2,10 @@ package com.hospital.ward.controller;
 
 import com.hospital.ward.model.Ward;
 import com.hospital.ward.repository.WardRepository;
+import com.hospital.ward.security.JwtValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,28 +19,51 @@ public class WardController {
     @Autowired
     private WardRepository repo;
 
+    @Autowired
+    private JwtValidator jwtValidator;
+
+    private ResponseEntity<?> validateToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Missing or invalid authorization header"));
+        }
+        String token = authHeader.substring(7);
+        if (!jwtValidator.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid or expired token"));
+        }
+        return null;
+    }
+
     @GetMapping
-    public List<Ward> getAll() {
-        return repo.findAll();
+    public ResponseEntity<?> getAll(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        ResponseEntity<?> validation = validateToken(authHeader);
+        if (validation != null) return validation;
+        return ResponseEntity.ok(repo.findAll());
     }
 
     @PostMapping
-    public Map<String, Object> add(@RequestBody Ward ward) {
+    public ResponseEntity<?> add(@RequestHeader(value = "Authorization", required = false) String authHeader, @RequestBody Ward ward) {
+        ResponseEntity<?> validation = validateToken(authHeader);
+        if (validation != null) return validation;
+
         Ward saved = repo.save(ward);
-        return Map.of("message", "Ward added", "wardId", saved.getId());
+        return ResponseEntity.ok(Map.of("message", "Ward added", "wardId", saved.getId()));
     }
 
     @PatchMapping("/{id}/occupancy")
-    public Map<String, Object> updateOccupancy(
+    public ResponseEntity<?> updateOccupancy(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
             @PathVariable Long id,
             @RequestBody Map<String, Integer> body) {
+        ResponseEntity<?> validation = validateToken(authHeader);
+        if (validation != null) return validation;
+
         Ward ward = repo.findById(id).orElseThrow();
         ward.setOccupied(body.get("occupied"));
         repo.save(ward);
-        return Map.of("message", "Ward occupancy updated");
+        return ResponseEntity.ok(Map.of("message", "Ward occupancy updated"));
     }
 
-    // called by patient-service when patient is admitted/discharged
+    // called by patient-service when patient is admitted/discharged (no token required for internal service)
     @PatchMapping("/name/{wardName}/increment")
     public Map<String, Object> increment(@PathVariable String wardName) {
         repo.findByName(wardName).ifPresent(ward -> {
