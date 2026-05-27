@@ -1,4 +1,0 @@
-com/hospital/ward/model/Ward.class
-com/hospital/ward/repository/WardRepository.class
-com/hospital/ward/WardApplication.class
-com/hospital/ward/controller/WardController.class

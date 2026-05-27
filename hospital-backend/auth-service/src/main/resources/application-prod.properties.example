@@ -1,0 +1,14 @@
+spring.datasource.url=jdbc:mysql://mysql-<instance-id>.f.aivencloud.com:<port>/defaultdb?useSSL=true&requireSSL=true&serverTimezone=UTC
+spring.datasource.username=avnadmin
+spring.datasource.password=<your-aiven-password>
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=false
+server.port=8083
+
+# JWT Configuration
+jwt.secret=<your-jwt-secret-key>
+jwt.expiration-ms=86400000
+
+spring.datasource.hikari.data-source-properties.useSSL=true
+spring.datasource.hikari.data-source-properties.requireSSL=true

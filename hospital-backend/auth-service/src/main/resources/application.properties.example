@@ -1,0 +1,33 @@
+server.port=8083
+spring.application.name=AUTH-SERVICE
+
+# ── Aiven MySQL ───────────────────────────────────────────────
+# Set these from Aiven or your environment
+spring.datasource.url=jdbc:mysql://mysql-<instance-id>.f.aivencloud.com:<port>/defaultdb?serverTimezone=UTC
+spring.datasource.username=avnadmin
+spring.datasource.password=<your-aiven-password>
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# ── JPA / Hibernate ───────────────────────────────────────────
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# ── MySQL SSL defaults ────────────────────────────────────────
+spring.datasource.hikari.data-source-properties.useSSL=true
+spring.datasource.hikari.data-source-properties.requireSSL=true
+
+# ── SQL Init — runs schema.sql and data.sql on startup ────────
+spring.sql.init.mode=always
+spring.sql.init.schema-locations=classpath:schema.sql
+spring.sql.init.data-locations=classpath:data.sql
+spring.jpa.defer-datasource-initialization=true
+
+# ── JWT ───────────────────────────────────────────────────────
+jwt.secret=<your-jwt-secret-key>
+jwt.expiration-ms=86400000
+
+# ── Eureka ────────────────────────────────────────────────────
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+eureka.instance.prefer-ip-address=true

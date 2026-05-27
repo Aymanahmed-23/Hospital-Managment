@@ -31,6 +31,7 @@ Thumbs.db
 
 # Spring Boot configs
 **/application.properties
+**/application-prod.properties
 **/application-local.properties
 
 
